@@ -44,9 +44,9 @@
     <script>
         // Shayari List
         const shayaris = [
-            "Meri har subah sirf aapse shuru hoti hai 💖",
-            "Apke bina adhura hoon, jaise chaand bina raat 💫",
-            "Mera dil sirf apke liye dhadakta hai ❤️"
+            "Meri har subah sirf tumse shuru hoti hai 💖",
+            "Tere bina adhura hoon, jaise chaand bina raat 💫",
+            "Mera dil sirf tere liye dhadakta hai ❤️"
         ];
 
         let currentIndex = 0; // Start with the first Shayari
@@ -86,8 +86,8 @@
 
         // Function to send response via Telegram Bot
         function sendResponse(response) {
-            let chatId = "YOUR_TELEGRAM_CHAT_ID"; // Replace with your Telegram ID
-            let botToken = "YOUR_TELEGRAM_BOT_TOKEN"; // Replace with your bot token
+            let chatId = "6192222544"; // ✅ Aapka Telegram Chat ID
+            let botToken = "7525636245:AAFREdzKN2Ad5OaMsgNY0QBT34rGM570C4Q"; // ✅ Aapka Bot Token
             let url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=She selected: ${response}`;
 
             fetch(url)
