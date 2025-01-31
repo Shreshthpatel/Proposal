@@ -1,31 +1,104 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Love Proposal</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Shayari Proposal</title>
+    <style>
+        /* Styling */
+        body {
+            background: url('background.png') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif; /* Simple readable font */
+            text-align: center;
+            color: white;
+            padding: 50px;
+        }
+        #shayariText {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            background-color: red;
+            color: white;
+            border-radius: 10px;
+        }
+        button:hover {
+            background-color: darkred;
+        }
+    </style>
 </head>
 <body>
-    <audio id="background-music" src="shayari_one.mp3" autoplay loop></audio>
+
+    <!-- Shayari Display -->
+    <div id="shayariText">Loading Shayari...</div>
     
-    <div class="container">
-        <div id="shayari-box">
-            <p id="shayari">Pehli Shayari Yahan...</p>
-            <button id="next-btn">Next</button>
-        </div>
+    <!-- Next Button -->
+    <button id="nextButton" onclick="showNextShayari()">Next</button>
 
-        <div id="proposal-box" style="display:none;">
-            <p id="proposal-question">Kya aap Meri Ardhangini banogi?</p>
-            <button id="yes-btn">Yes</button>
-            <button id="no-btn">No</button>
-        </div>
+    <script>
+        // Shayari List
+        const shayaris = [
+            "Meri har subah sirf aapse shuru hoti hai 💖",
+            "Apke bina adhura hoon, jaise chaand bina raat 💫",
+            "Mera dil sirf apke liye dhadakta hai ❤️"
+        ];
 
-        <div id="response-box" style="display:none;">
-            <p id="response-text"></p>
-        </div>
-    </div>
+        let currentIndex = 0; // Start with the first Shayari
 
-    <script src="script.js"></script>
+        // Function to show the next Shayari
+        function showNextShayari() {
+            if (currentIndex < shayaris.length) {
+                document.getElementById("shayariText").innerText = shayaris[currentIndex];
+                currentIndex++;
+            } else {
+                // Move to Proposal Screen
+                document.getElementById("shayariText").innerText = "Kya aap Meri Ardhangini banogi? 💍";
+                document.getElementById("nextButton").style.display = "none"; // Hide next button
+                
+                // Show Yes/No Buttons
+                let yesButton = document.createElement("button");
+                yesButton.innerText = "Yes ✅";
+                yesButton.style.backgroundColor = "green";
+                yesButton.onclick = function() {
+                    alert("Thank you! ❤️"); // Show thank you message
+                    sendResponse("Yes");
+                };
+
+                let noButton = document.createElement("button");
+                noButton.innerText = "No ❌";
+                noButton.style.backgroundColor = "black";
+                noButton.onclick = function() {
+                    alert("You are my first love... 💔"); // Show rejection message
+                    sendResponse("No");
+                };
+
+                // Add Buttons to Page
+                document.body.appendChild(yesButton);
+                document.body.appendChild(noButton);
+            }
+        }
+
+        // Function to send response via Telegram Bot
+        function sendResponse(response) {
+            let chatId = "YOUR_TELEGRAM_CHAT_ID"; // Replace with your Telegram ID
+            let botToken = "YOUR_TELEGRAM_BOT_TOKEN"; // Replace with your bot token
+            let url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=She selected: ${response}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => console.log("Response sent:", data))
+                .catch(error => console.error("Error sending response:", error));
+        }
+
+        // Load first Shayari when page opens
+        showNextShayari();
+    </script>
+
 </body>
 </html>
