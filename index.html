@@ -1,41 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Love Proposal ❤️</title>
+    <title>Love Proposal</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        h1, #letter p {
-            font-family: 'Great Vibes', cursive;
-        }
-    </style>
 </head>
 <body>
+    <audio id="background-music" src="shayari_one.mp3" autoplay loop></audio>
+    
     <div class="container">
-        <h1 id="shayariText">Meri ek chhoti si duniya hai, jisme sirf tum ho...  💖</h1>
-        <audio id="shayariAudio" src="shayari1.mp3"></audio>
-        <button id="nextBtn" onclick="nextShayari()">Next ➡️</button>
-        
-        <div id="letterSection" class="hidden">
-            <button id="openLetter" onclick="openLetter()">💌 Open Letter</button>
-            <div id="letter" class="hidden">
-                <p>Will you be mine forever? ❤️</p>
-                <button id="yesBtn" onclick="showYesEffect()">😍 Yes</button>
-                <button id="noBtn" onclick="showNoEffect()">😢 No</button>
-            </div>
+        <div id="shayari-box">
+            <p id="shayari">Pehli Shayari Yahan...</p>
+            <button id="next-btn">Next</button>
         </div>
-        
-        <div id="hearts" class="hidden"></div>
-        <p id="sadMessage" class="hidden">You were my first love... 💔</p>
-        <audio id="proposalAudio" src="proposal.mp3"></audio>
-        <audio id="yesAudio" src="yes.mp3"></audio>
-        <audio id="noAudio" src="no.mp3"></audio>
+
+        <div id="proposal-box" style="display:none;">
+            <p id="proposal-question">Kya aap Meri Ardhangini banogi?</p>
+            <button id="yes-btn">Yes</button>
+            <button id="no-btn">No</button>
+        </div>
+
+        <div id="response-box" style="display:none;">
+            <p id="response-text"></p>
+        </div>
     </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
