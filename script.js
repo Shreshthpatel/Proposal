@@ -1,32 +1,36 @@
-const text = "I just want to say...\nYou are the most amazing person I’ve ever met.💖";
-let i = 0;
-let speed = 50;  // Speed of text animation
+const shayaris = [
+    "Dil ki baat apse kehna chahta hoon, Kya aap meri zindagi mein shaamil hona chahti ho?",
+    "Tumhe dekhne ka ek alag hi mazaa hai, Kya tum mere saath zindagi ka safar tay karogi?",
+    "Har pal tumhara intezaar karta hoon, Kya tum mere saath apna jeevan bitana chahti ho?"
+];
 
-function typeWriter() {
-    if (i < text.length) {
-        document.getElementById("loveText").innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typeWriter, speed);
+let currentShayariIndex = 0;
+
+document.getElementById("next-btn").addEventListener("click", function() {
+    if (currentShayariIndex < shayaris.length - 1) {
+        currentShayariIndex++;
+        document.getElementById("shayari").innerText = shayaris[currentShayariIndex];
+    } else {
+        document.getElementById("shayari-box").style.display = "none";
+        document.getElementById("proposal-box").style.display = "block";
     }
+});
+
+document.getElementById("yes-btn").addEventListener("click", function() {
+    document.getElementById("response-text").innerText = "Thank you for saying Yes! 💖";
+    document.getElementById("response-box").style.display = "block";
+    document.getElementById("proposal-box").style.display = "none";
+    playAudio("yes.mp3");
+});
+
+document.getElementById("no-btn").addEventListener("click", function() {
+    document.getElementById("response-text").innerText = "You are my first love... 💔";
+    document.getElementById("response-box").style.display = "block";
+    document.getElementById("proposal-box").style.display = "none";
+    playAudio("no.mp3");
+});
+
+function playAudio(audioFile) {
+    let audio = new Audio(audioFile);
+    audio.play();
 }
-
-function showProposal() {
-    document.getElementById("proposalText").classList.remove("hidden");
-    document.getElementById("yesBtn").classList.remove("hidden");
-    document.getElementById("noBtn").classList.remove("hidden");
-}
-
-async function saveResponse(response) {
-    await fetch("/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answer: response })
-    });
-
-    document.getElementById("proposalText").innerText = "Thank you for your response! ❤️";
-    document.getElementById("yesBtn").style.display = "none";
-    document.getElementById("noBtn").style.display = "none";
-}
-
-// Start the text animation when the page loads
-window.onload = typeWriter;
