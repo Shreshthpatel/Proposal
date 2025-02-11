@@ -9,7 +9,7 @@
         body {
             background: url('background.png') no-repeat center center fixed;
             background-size: cover;
-            font-family: Arial, sans-serif; /* Simple readable font */
+            font-family: Arial, sans-serif;
             text-align: center;
             color: white;
             padding: 50px;
@@ -19,6 +19,16 @@
             font-weight: bold;
             margin-bottom: 20px;
         }
+        #gifContainer {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+        }
+        #gifContainer img {
+            width: 150px; /* Small gif */
+            height: auto;
+            border-radius: 10px;
+        }
         button {
             padding: 10px 20px;
             font-size: 18px;
@@ -27,6 +37,7 @@
             background-color: red;
             color: white;
             border-radius: 10px;
+            margin: 10px;
         }
         button:hover {
             background-color: darkred;
@@ -38,35 +49,42 @@
     <!-- Shayari Display -->
     <div id="shayariText">Loading Shayari...</div>
     
+    <!-- GIF Container -->
+    <div id="gifContainer">
+        <img id="shayariGif" src="" alt="GIF Loading..." />
+    </div>
+
     <!-- Next Button -->
     <button id="nextButton" onclick="showNextShayari()">Next</button>
 
     <script>
-        // Shayari List
+        // Shayari List with GIFs
         const shayaris = [
-            "Meri har subah sirf tumse shuru hoti hai 💖",
-            "Tere bina adhura hoon, jaise chaand bina raat 💫",
-            "Mera dil sirf tere liye dhadakta hai ❤️"
+            { text: "Meri har subah sirf aapmse shuru hoti hai 💖", gif: "gif1.gif" },
+            { text: "Apke bina adhura hoon, jaise chaand bina raat 💫", gif: "gif2.gif" },
+            { text: "Mera dil sirf Apke liye dhadakta hai ❤️", gif: "gif3.gif" }
         ];
 
-        let currentIndex = 0; // Start with the first Shayari
+        let currentIndex = 0;
 
-        // Function to show the next Shayari
+        // Function to show the next Shayari and GIF
         function showNextShayari() {
             if (currentIndex < shayaris.length) {
-                document.getElementById("shayariText").innerText = shayaris[currentIndex];
+                document.getElementById("shayariText").innerText = shayaris[currentIndex].text;
+                document.getElementById("shayariGif").src = shayaris[currentIndex].gif;
                 currentIndex++;
             } else {
                 // Move to Proposal Screen
                 document.getElementById("shayariText").innerText = "Kya aap Meri Ardhangini banogi? 💍";
                 document.getElementById("nextButton").style.display = "none"; // Hide next button
-                
+                document.getElementById("shayariGif").src = "proposal.gif"; // Show Proposal GIF
+
                 // Show Yes/No Buttons
                 let yesButton = document.createElement("button");
                 yesButton.innerText = "Yes ✅";
                 yesButton.style.backgroundColor = "green";
                 yesButton.onclick = function() {
-                    alert("Thank you! ❤️"); // Show thank you message
+                    alert("Thank you! ❤️");
                     sendResponse("Yes");
                 };
 
@@ -74,7 +92,7 @@
                 noButton.innerText = "No ❌";
                 noButton.style.backgroundColor = "black";
                 noButton.onclick = function() {
-                    alert("You are my first love... 💔"); // Show rejection message
+                    alert("You are my first love... 💔");
                     sendResponse("No");
                 };
 
@@ -86,8 +104,8 @@
 
         // Function to send response via Telegram Bot
         function sendResponse(response) {
-            let chatId = "6192222544"; // ✅ Aapka Telegram Chat ID
-            let botToken = "7525636245:AAFREdzKN2Ad5OaMsgNY0QBT34rGM570C4Q"; // ✅ Aapka Bot Token
+            let chatId = "6192222544"; 
+            let botToken = "7525636245:AAFREdzKN2Ad5OaMsgNY0QBT34rGM570C4Q";
             let url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=She selected: ${response}`;
 
             fetch(url)
@@ -96,7 +114,7 @@
                 .catch(error => console.error("Error sending response:", error));
         }
 
-        // Load first Shayari when page opens
+        // Load first Shayari and GIF
         showNextShayari();
     </script>
 
