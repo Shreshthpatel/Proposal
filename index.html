@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💝My Proposal💖</title>
+    <title>💖My proposal for you Cutie💖</title>
     <style>
-        /* Styling */
+        /* Basic Styling */
         body {
             background: url('background.png') no-repeat center center fixed;
             background-size: cover;
@@ -13,11 +13,31 @@
             text-align: center;
             color: white;
             padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        #startMessage {
-            font-size: 20px;
-            margin-bottom: 30px;
-            color: white;
+        #shayariPage {
+            display: none; /* Start mein hide rahega */
+        }
+        #shayariText {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        #gifContainer img {
+            width: 150px;
+            height: auto;
+            border-radius: 10px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            width: 100%;
         }
         button {
             padding: 10px 20px;
@@ -32,49 +52,39 @@
         button:hover {
             background-color: darkred;
         }
-        #shayariText {
-            font-size: 24px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-        #gifContainer {
-            margin-top: 10px;
-            display: flex;
-            justify-content: center;
-        }
-        #gifContainer img {
-            width: 150px;
-            height: auto;
-            border-radius: 10px;
-        }
     </style>
 </head>
 <body>
+
     <!-- Start Page -->
     <div id="startPage">
-        <p id="startMessage">Maine yeh khas aapke liye banaya hai! Niche wale button ko please daba dijiye , aur please dekhiye ki maineapke liye kya banaya hai..!💖</p>
-        <button onclick="startMusic()">Start!</button>
+        <h1>Hi ❤️</h1>
+        <h2>💝💗Ye maine khaas apkeliye  banaya hai! Please aap Start button ko click karke start kardo💖🥰</h2>
+        <button onclick="startApp()">Start</button>
     </div>
 
-    <!-- Music -->
-    <audio id="bgMusic" loop style="display: none;">
-        <source src="0c24911425ce2f710fd96e633dcd4b12_160.m4a" type="audio/aac">
-        Your browser does not support audio playback.
-    </audio>
-
-    <!-- Shayari Display -->
-    <div id="shayariText" style="display: none;">Shayari loading...</div>
-
-    <!-- GIF Container -->
-    <div id="gifContainer" style="display: none;">
-        <img id="shayariGif" src="" alt="GIF Loading..." />
+    <!-- Shayari Page -->
+    <div id="shayariPage">
+        <div id="shayariText">Loading Shayari...</div>
+        <div id="gifContainer">
+            <img id="shayariGif" src="" alt="GIF Loading..." />
+        </div>
+        <div class="button-container">
+            <button id="nextButton" onclick="showNextShayari()">Next</button>
+        </div>
     </div>
 
-    <!-- Next Button -->
-    <button id="nextButton" onclick="showNextShayari()" style="display: none;">Next</button>
+    <audio id="backgroundMusic" loop>
+    <source src="0c24911425ce2f710fd96e633dcd4b12_160.m4a" type="audio/aac">
+</audio>
 
     <script>
-        // Shayari List with GIFs
+        function startApp() {
+            document.getElementById("startPage").style.display = "none";
+            document.getElementById("shayariPage").style.display = "block";
+            document.getElementById("backgroundMusic").play();
+        }
+
         const shayaris = [
             { text: "Meri har subah sirf aapse shuru hoti hai 💖", gif: "gif1.gif" },
             { text: "Apke bina adhura hoon, jaise chaand bina raat 💫", gif: "gif2.gif" },
@@ -83,72 +93,43 @@
 
         let currentIndex = 0;
 
-        // Start Music and Show First Shayari
-        function startMusic() {
-            let audio = document.getElementById("bgMusic");
-            let startPage = document.getElementById("startPage");
-            let shayariText = document.getElementById("shayariText");
-            let gifContainer = document.getElementById("gifContainer");
-            let nextButton = document.getElementById("nextButton");
-
-            audio.play().then(() => {
-                startPage.style.display = "none"; // Hide start page
-                shayariText.style.display = "block"; // Show shayari
-                gifContainer.style.display = "block"; // Show GIF container
-                nextButton.style.display = "block"; // Show next button
-                showNextShayari(); // Start showing first shayari
-            }).catch(error => {
-                console.error("Autoplay error:", error);
-            });
-        }
-
-        // Function to show the next Shayari and GIF
         function showNextShayari() {
             if (currentIndex < shayaris.length) {
                 document.getElementById("shayariText").innerText = shayaris[currentIndex].text;
                 document.getElementById("shayariGif").src = shayaris[currentIndex].gif;
                 currentIndex++;
             } else {
-                // Move to Proposal Screen
                 document.getElementById("shayariText").innerText = "Kya aap Meri Ardhangini banogi? 💍";
-                document.getElementById("nextButton").style.display = "none"; // Hide next button
-                document.getElementById("shayariGif").src = "proposal.gif"; // Show Proposal GIF
+                document.getElementById("nextButton").style.display = "none";
+                document.getElementById("shayariGif").src = "proposal.gif";
 
-                // Show Yes/No Buttons
+                let buttonContainer = document.querySelector(".button-container");
+                buttonContainer.innerHTML = '';
+
                 let yesButton = document.createElement("button");
                 yesButton.innerText = "Yes ✅";
                 yesButton.style.backgroundColor = "green";
                 yesButton.onclick = function() {
+                    document.getElementById("backgroundMusic").src = "yes.mp3";
+                    document.getElementById("backgroundMusic").play();
                     alert("Thank you! ❤️");
-                    sendResponse("Yes");
                 };
 
                 let noButton = document.createElement("button");
                 noButton.innerText = "No ❌";
                 noButton.style.backgroundColor = "black";
                 noButton.onclick = function() {
-                    alert("You are my first love... 💔");
-                    sendResponse("No");
+                    document.getElementById("backgroundMusic").src = "no.mp3";
+                    document.getElementById("backgroundMusic").play();
+                    alert("You are my true love... 💔");
                 };
 
-                // Add Buttons to Page
-                document.body.appendChild(yesButton);
-                document.body.appendChild(noButton);
+                buttonContainer.appendChild(yesButton);
+                buttonContainer.appendChild(noButton);
             }
         }
 
-        // Function to send response via Telegram Bot
-        function sendResponse(response) {
-            let chatId = "6192222544"; 
-            let botToken = "7525636245:AAFREdzKN2Ad5OaMsgNY0QBT34rGM570C4Q";
-            let url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=She selected: ${response}`;
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => console.log("Response sent:", data))
-                .catch(error => console.error("Error sending response:", error));
-        }
-
+        showNextShayari();
     </script>
 
 </body>
