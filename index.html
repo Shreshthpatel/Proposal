@@ -50,17 +50,18 @@
     Your browser does not support audio playback.
 </audio>
     <script>
-document.addEventListener("visibilitychange", function () {
+window.onload = function () {
     let audio = document.getElementById("bgMusic");
-    if (document.visibilityState === "visible") {
+    
+    // Fake user interaction via setTimeout
+    setTimeout(() => {
+        document.body.click(); // Fake click
         audio.play().catch(error => {
-            console.log("Autoplay blocked: ", error);
+            console.log("Autoplay blocked again: ", error);
         });
-    }
-});
+    }, 1000);
+};
 </script>
-     
-
     <!-- Shayari Display -->
     <div id="shayariText">Loading Shayari...</div>
     
@@ -75,7 +76,7 @@ document.addEventListener("visibilitychange", function () {
     <script>
         // Shayari List with GIFs
         const shayaris = [
-            { text: "Meri har subah sirf aapmse shuru hoti hai 💖", gif: "gif1.gif" },
+            { text: "Meri har subah sirf aapse shuru hoti hai 💖", gif: "gif1.gif" },
             { text: "Apke bina adhura hoon, jaise chaand bina raat 💫", gif: "gif2.gif" },
             { text: "Mera dil sirf Apke liye dhadakta hai ❤️", gif: "gif3.gif" }
         ];
