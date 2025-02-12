@@ -62,6 +62,14 @@ window.onload = function () {
     }, 1000);
 };
 </script>
+    <script>
+document.addEventListener("touchstart", function () {
+    let audio = document.getElementById("bgMusic");
+    audio.play().catch(error => {
+        console.log("Autoplay blocked: ", error);
+    });
+}, { once: true }); // Sirf ek baar chalega
+</script>
     <!-- Shayari Display -->
     <div id="shayariText">Loading Shayari...</div>
     
