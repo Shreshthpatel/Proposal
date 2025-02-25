@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💖My proposal for you Cutie💖</title>
+    <title>💖My Proposal for You💖</title>
     <style>
         body {
             background: url('background.png') no-repeat center center fixed;
@@ -11,25 +11,20 @@
             font-family: Arial, sans-serif;
             text-align: center;
             color: white;
-            padding: 50px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            padding: 20px;
         }
-        #shayariPage {
+        #shayariPage, #proposalPage {
             display: none;
         }
         #shayariText {
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 20px;
-        }
-        #gifContainer img {
-            width: 150px;
-            height: auto;
-            border-radius: 10px;
         }
         .button-container {
             display: flex;
@@ -56,17 +51,22 @@
 <body>
     <div id="startPage">
         <h1>Hi ❤️</h1>
-        <h2>💝💗Ye maine khaas apkeliye banaya hai! Please Start button ko click karein💖🥰</h2>
+        <h2>💝Ye maine khaas aapke liye banaya hai! Start button dabaiye💖</h2>
         <button onclick="startApp()">Start</button>
     </div>
 
     <div id="shayariPage">
         <div id="shayariText">Loading Shayari...</div>
-        <div id="gifContainer">
-            <img id="shayariGif" src="" alt="GIF Loading..." />
-        </div>
         <div class="button-container">
             <button id="nextButton" onclick="showNextShayari()">Next</button>
+        </div>
+    </div>
+
+    <div id="proposalPage">
+        <h2 id="proposalText"></h2>
+        <div class="button-container">
+            <button id="yesButton" onclick="sendResponse('yes')" style="background-color: green;">Yes ✅</button>
+            <button id="noButton" onclick="sendResponse('no')" style="background-color: black;">No ❌</button>
         </div>
     </div>
 
@@ -75,69 +75,67 @@
     </audio>
 
     <script>
+        let shayaris = [
+            "Meri har subah sirf aapse shuru hoti hai 💖",
+            "Aapke bina adhura hoon, jaise chaand bina raat 💫",
+            "Mera dil sirf Aapke liye dhadakta hai ❤️"
+        ];
+        let currentIndex = 0;
+
         function startApp() {
             document.getElementById("startPage").style.display = "none";
             document.getElementById("shayariPage").style.display = "block";
             document.getElementById("backgroundMusic").play();
+            showNextShayari();
         }
-
-        const shayaris = [
-            { text: "Meri har subah sirf aapse shuru hoti hai 💖", gif: "gif1.gif" },
-            { text: "Apke bina adhura hoon, jaise chaand bina raat 💫", gif: "gif2.gif" },
-            { text: "Mera dil sirf Apke liye dhadakta hai ❤️", gif: "gif3.gif" }
-        ];
-
-        let currentIndex = 0;
 
         function showNextShayari() {
             if (currentIndex < shayaris.length) {
-                document.getElementById("shayariText").innerText = shayaris[currentIndex].text;
-                document.getElementById("shayariGif").src = shayaris[currentIndex].gif;
+                document.getElementById("shayariText").innerText = shayaris[currentIndex];
                 currentIndex++;
             } else {
-                document.getElementById("shayariText").innerText = "Kya aap Meri Ardhangini banogi? 💍";
-                document.getElementById("nextButton").style.display = "none";
-                document.getElementById("shayariGif").src = "proposal.gif";
-                let buttonContainer = document.querySelector(".button-container");
-                buttonContainer.innerHTML = '';
-                
-                let yesButton = document.createElement("button");
-                yesButton.innerText = "Yes ✅";
-                yesButton.style.backgroundColor = "green";
-                yesButton.onclick = function() {
-                    document.getElementById("backgroundMusic").src = "yes.mp3";
-                    document.getElementById("backgroundMusic").play();
-                    sendTelegramMessage("She selected Yes ❤️");
-                    alert("Thank you! ❤️");
-                };
-
-                let noButton = document.createElement("button");
-                noButton.innerText = "No ❌";
-                noButton.style.backgroundColor = "black";
-                noButton.onclick = function() {
-                    document.getElementById("backgroundMusic").src = "no.mp3";
-                    document.getElementById("backgroundMusic").play();
-                    sendTelegramMessage("She selected No 💔");
-                    alert("You are my true love... 💔");
-                };
-
-                buttonContainer.appendChild(yesButton);
-                buttonContainer.appendChild(noButton);
+                showProposal();
             }
+        }
+
+        function showProposal() {
+            document.getElementById("shayariPage").style.display = "none";
+            document.getElementById("proposalPage").style.display = "block";
+            typeWriterEffect("Kya aap Meri Ardhangini banogi? 💍", "proposalText", function() {
+                document.getElementById("backgroundMusic").src = "propose_lot.mp3";
+                document.getElementById("backgroundMusic").play();
+            });
+        }
+
+        function typeWriterEffect(text, elementId, callback) {
+            let i = 0;
+            let speed = 50;
+            function type() {
+                if (i < text.length) {
+                    document.getElementById(elementId).innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    callback();
+                }
+            }
+            type();
+        }
+
+        function sendResponse(response) {
+            let music = response === "yes" ? "yes.mp3" : "no.mp3";
+            let message = response === "yes" ? "She selected YES ❤️" : "She selected NO 💔";
+            document.getElementById("backgroundMusic").src = music;
+            document.getElementById("backgroundMusic").play();
+            sendTelegramMessage(message);
         }
 
         function sendTelegramMessage(message) {
             let chatId = "6192222544";
             let botToken = "7525636245:AAFREdzKN2Ad5OaMsgNY0QBT34rGM570C4Q";
-            
             let url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
-            fetch(url)
-                .then(response => response.json())
-                .then(data => console.log("Telegram Response:", data))
-                .catch(error => console.error("Telegram Error:", error));
+            fetch(url).catch(err => console.error("Telegram Error: ", err));
         }
-
-        showNextShayari();
     </script>
 </body>
 </html>
